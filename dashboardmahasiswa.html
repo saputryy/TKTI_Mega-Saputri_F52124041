@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMLAT - Dashboard Mahasiswa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        :root {
+            --primary: #1a5fb4;
+            --primary-light: #e3f2fd;
+            --secondary: #26a269;
+            --accent: #ff6b6b;
+            --dark: #2e3436;
+            --light: #f8f9fa;
+            --gray: #8a8a8a;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--dark);
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            height: 95vh;
+            max-height: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(to right, var(--primary), #0d4a9c);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            background: white;
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .logo-text p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        
+        .user-info {
+            text-align: right;
+        }
+        
+        .user-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--light);
+            padding: 25px 20px;
+            border-right: 1px solid #eaeaea;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--dark);
+            text-decoration: none;
+        }
+        
+        .menu-item:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .menu-item.active {
+            background: var(--primary);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .menu-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .menu-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .notification-badge {
+            background: var(--accent);
+            color: white;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            margin-left: auto;
+        }
+        
+        /* Content Area */
+        .content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+        
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section-title h2 {
+            font-size: 22px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .see-all {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: var(--light);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #eaeaea;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .card.krs .card-icon { background: #3498db; }
+        .card.payment .card-icon { background: #2ecc71; }
+        .card.grades .card-icon { background: #9b59b6; }
+        .card.letter .card-icon { background: #e74c3c; }
+        .card.notification .card-icon { background: #f39c12; }
+        
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .card p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+        
+        /* Notifications */
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .notification-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-desc {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .notification-time {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+        
+        /* Recent Activities */
+        .activities-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 16px;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .activity-time {
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        .activity-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-processing {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-header h3 {
+            font-size: 22px;
+            color: var(--primary);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .modal-body {
+            margin-bottom: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0d4a9c;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-success {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #1e8e4f;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--light);
+            padding: 15px 30px;
+            text-align: center;
+            color: var(--gray);
+            font-size: 14px;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                padding: 15px;
+                overflow-x: auto;
+            }
+            
+            .menu-item {
+                min-width: 150px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .user-info {
+                text-align: center;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .modal-content {
+                padding: 20px;
+            }
+            
+            .modal-footer {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">S</div>
+                <div class="logo-text">
+                    <h1>SMLAT</h1>
+                    <p>Sistem Mahasiswa Universitas Tadulako</p>
+                </div>
+            </div>
+            <div class="user-info">
+                <h3>Mega Saputri</h3>
+                <p>F52124041 | Sistem Informasi</p>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <nav class="sidebar">
+                <a href="#" class="menu-item active">
+                    <div class="menu-icon"><i class="fas fa-home"></i></div>
+                    <div class="menu-text">Dashboard</div>
+                </a>
+                <a href="#" class="menu-item" onclick="showModal('krsModal')">
+                    <div class="menu-icon"><i class="fas fa-book"></i></div>
+                    <div class="menu-text">Tambah KRS</div>
+                </a>
+                <a href="#" class="menu-item" onclick="showModal('paymentModal')">
+                    <div class="menu-icon"><i class="fas fa-credit-card"></i></div>
+                    <div class="menu-text">Pembayaran Digital</div>
+                </a>
+                <a href="#" class="menu-item" onclick="showModal('gradesModal')">
+                    <div class="menu-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="menu-text">Cek Nilai</div>
+                </a>
+                <a href="#" class="menu-item" onclick="showModal('letterModal')">
+                    <div class="menu-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="menu-text">Ajukan Surat</div>
+                </a>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon"><i class="fas fa-bell"></i></div>
+                    <div class="menu-text">Notifikasi</div>
+                    <div class="notification-badge">3</div>
+                </a>
+            </nav>
+            
+            <!-- Content Area -->
+            <main class="content">
+                <!-- Welcome Section -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Selamat Datang, Mega!</h2>
+                    </div>
+                    <p>Dashboard Sistem Mahasiswa Universitas Tadulako (SMLAT) memudahkan Anda mengelola aktivitas akademik dan administrasi. Pilih menu di samping atau kartu di bawah untuk memulai.</p>
+                </section>
+                
+                <!-- Quick Actions -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Aksi Cepat</h2>
+                        <a href="#" class="see-all">Lihat Semua <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="cards-grid">
+                        <div class="card krs" onclick="showModal('krsModal')">
+                            <div class="card-icon"><i class="fas fa-book"></i></div>
+                            <h3>Tambah KRS</h3>
+                            <p>Tambah atau edit Kartu Rencana Studi untuk semester ini</p>
+                        </div>
+                        <div class="card payment" onclick="showModal('paymentModal')">
+                            <div class="card-icon"><i class="fas fa-credit-card"></i></div>
+                            <h3>Pembayaran Digital</h3>
+                            <p>Bayar UKT, SPP, dan biaya lainnya secara online</p>
+                        </div>
+                        <div class="card grades" onclick="showModal('gradesModal')">
+                            <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                            <h3>Cek Nilai</h3>
+                            <p>Lihat nilai mata kuliah dan transkrip akademik</p>
+                        </div>
+                        <div class="card letter" onclick="showModal('letterModal')">
+                            <div class="card-icon"><i class="fas fa-envelope"></i></div>
+                            <h3>Ajukan Surat</h3>
+                            <p>Ajukan surat keterangan, permohonan, dan lainnya</p>
+                        </div>
+                        <div class="card notification" onclick="showModal('notificationModal')">
+                            <div class="card-icon"><i class="fas fa-bell"></i></div>
+                            <h3>Notifikasi</h3>
+                            <p>Lihat pemberitahuan penting dari kampus</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Notifications -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Notifikasi Terbaru</h2>
+                        <a href="#" class="see-all">Lihat Semua <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="notifications-list">
+                        <div class="notification-item">
+                            <div class="notification-icon"><i class="fas fa-calendar-check"></i></div>
+                            <div class="notification-content">
+                                <div class="notification-title">Batas Akhir Pengisian KRS</div>
+                                <div class="notification-desc">Batas akhir pengisian KRS Semester Ganjil 2024/2025 adalah 25 September 2024.</div>
+                                <div class="notification-time">2 jam yang lalu</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon"><i class="fas fa-money-bill-wave"></i></div>
+                            <div class="notification-content">
+                                <div class="notification-title">Pembayaran UKT Tahap 2</div>
+                                <div class="notification-desc">Pembayaran UKT tahap 2 jatuh tempo pada 30 September 2024. Silakan lakukan pembayaran.</div>
+                                <div class="notification-time">1 hari yang lalu</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                            <div class="notification-content">
+                                <div class="notification-title">Jadwal UTS Semester Ganjil</div>
+                                <div class="notification-desc">Jadwal UTS Semester Ganjil 2024/2025 telah diumumkan. Cek di menu akademik.</div>
+                                <div class="notification-time">3 hari yang lalu</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Recent Activities -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Aktivitas Terbaru</h2>
+                        <a href="#" class="see-all">Lihat Semua <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="activities-list">
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="fas fa-book"></i></div>
+                            <div class="activity-content">
+                                <div class="activity-title">Pengisian KRS Semester Ganjil 2024/2025</div>
+                                <div class="activity-time">15 September 2024, 10:30 WITA</div>
+                            </div>
+                            <div class="activity-status status-success">Selesai</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="fas fa-credit-card"></i></div>
+                            <div class="activity-content">
+                                <div class="activity-title">Pembayaran UKT Tahap 1</div>
+                                <div class="activity-time">5 September 2024, 14:20 WITA</div>
+                            </div>
+                            <div class="activity-status status-success">Lunas</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="activity-content">
+                                <div class="activity-title">Pengajuan Surat Keterangan Aktif</div>
+                                <div class="activity-time">1 September 2024, 09:15 WITA</div>
+                            </div>
+                            <div class="activity-status status-processing">Diproses</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="fas fa-file-alt"></i></div>
+                            <div class="activity-content">
+                                <div class="activity-title">Pengunduhan Transkrip Nilai</div>
+                                <div class="activity-time">28 Agustus 2024, 16:45 WITA</div>
+                            </div>
+                            <div class="activity-status status-success">Selesai</div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 SMLAT - Universitas Tadulako. Hak Cipta Dilindungi.</p>
+        </footer>
+    </div>
+    
+    <!-- Modals -->
+    
+    <!-- KRS Modal -->
+    <div id="krsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tambah Kartu Rencana Studi (KRS)</h3>
+                <button class="close-modal" onclick="closeModal('krsModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="semester">Semester</label>
+                    <select id="semester" class="form-control">
+                        <option value="ganjil">Semester Ganjil 2024/2025</option>
+                        <option value="genap">Semester Genap 2023/2024</option>
+                        <option value="ganjil-lalu">Semester Ganjil 2023/2024</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Mata Kuliah yang Tersedia</label>
+                    <div style="margin-top: 10px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <input type="checkbox" id="mk1" style="margin-right: 10px;">
+                            <label for="mk1">Sistem Basis Data (3 SKS) - Dr. Ahmad Santoso</label>
+                        </div>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <input type="checkbox" id="mk2" style="margin-right: 10px;" checked>
+                            <label for="mk2">Pemrograman Web (3 SKS) - Dr. Siti Rahayu</label>
+                        </div>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <input type="checkbox" id="mk3" style="margin-right: 10px;" checked>
+                            <label for="mk3">Jaringan Komputer (3 SKS) - Prof. Bambang Wijaya</label>
+                        </div>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <input type="checkbox" id="mk4" style="margin-right: 10px;">
+                            <label for="mk4">Kecerdasan Buatan (3 SKS) - Dr. Rina Dewi</label>
+                        </div>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <input type="checkbox" id="mk5" style="margin-right: 10px;" checked>
+                            <label for="mk5">Manajemen Proyek TI (3 SKS) - Dr. Andi Pratama</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="totalSKS">Total SKS</label>
+                    <input type="text" id="totalSKS" class="form-control" value="9 SKS" readonly>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('krsModal')">Batal</button>
+                <button class="btn btn-primary" onclick="submitKRS()">Simpan KRS</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Pembayaran Digital</h3>
+                <button class="close-modal" onclick="closeModal('paymentModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="paymentType">Jenis Pembayaran</label>
+                    <select id="paymentType" class="form-control">
+                        <option value="ukt">UKT (Uang Kuliah Tunggal)</option>
+                        <option value="spp">SPP (Semester Pendek)</option>
+                        <option value="praktikum">Biaya Praktikum</option>
+                        <option value="lainnya">Lainnya</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Jumlah Pembayaran</label>
+                    <input type="text" id="amount" class="form-control" value="Rp 2.500.000" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethod">Metode Pembayaran</label>
+                    <select id="paymentMethod" class="form-control">
+                        <option value="transfer">Transfer Bank</option>
+                        <option value="virtual">Virtual Account</option>
+                        <option value="qris">QRIS</option>
+                        <option value="ewallet">E-Wallet</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bankSelect">Bank Tujuan</label>
+                    <select id="bankSelect" class="form-control">
+                        <option value="bni">BNI</option>
+                        <option value="bri">BRI</option>
+                        <option value="mandiri">Mandiri</option>
+                        <option value="btn">BTN</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('paymentModal')">Batal</button>
+                <button class="btn btn-success" onclick="processPayment()">Lanjutkan Pembayaran</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Grades Modal -->
+    <div id="gradesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Nilai Akademik</h3>
+                <button class="close-modal" onclick="closeModal('gradesModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="gradeSemester">Semester</label>
+                    <select id="gradeSemester" class="form-control">
+                        <option value="ganjil">Semester Ganjil 2023/2024</option>
+                        <option value="genap">Semester Genap 2022/2023</option>
+                        <option value="ganjil-lalu">Semester Ganjil 2022/2023</option>
+                    </select>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background-color: #f0f0f0;">
+                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Mata Kuliah</th>
+                                <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;">SKS</th>
+                                <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;">Nilai</th>
+                                <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;">Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid #eee;">Analisis dan Desain Sistem</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">3</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">85</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">A</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid #eee;">Pemrograman Berorientasi Objek</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">3</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">82</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">A-</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid #eee;">Manajemen Basis Data</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">3</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">78</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">B+</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid #eee;">Jaringan dan Keamanan Sistem</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">3</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">88</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">A</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid #eee;">Interaksi Manusia dan Komputer</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">2</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">90</td>
+                                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee;">A</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
+                    <p style="margin: 0; font-weight: 500;">IP Semester: 3.72 | Total SKS: 14 | IPK: 3.65</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('gradesModal')">Tutup</button>
+                <button class="btn btn-primary" onclick="downloadTranscript()">Unduh Transkrip</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Letter Modal -->
+    <div id="letterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Pengajuan Surat</h3>
+                <button class="close-modal" onclick="closeModal('letterModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="letterType">Jenis Surat</label>
+                    <select id="letterType" class="form-control">
+                        <option value="aktif">Surat Keterangan Aktif</option>
+                        <option value="keterangan">Surat Keterangan</option>
+                        <option value="permohonan">Surat Permohonan</option>
+                        <option value="pengunduran">Surat Pengunduran Diri</option>
+                        <option value="lainnya">Surat Lainnya</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="letterPurpose">Tujuan Pengajuan</label>
+                    <input type="text" id="letterPurpose" class="form-control" placeholder="Contoh: Untuk mengajukan beasiswa">
+                </div>
+                <div class="form-group">
+                    <label for="letterDescription">Keterangan Tambahan</label>
+                    <textarea id="letterDescription" class="form-control" rows="4" placeholder="Jelaskan secara singkat alasan pengajuan surat"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="letterAttachment">Lampiran (Opsional)</label>
+                    <input type="file" id="letterAttachment" class="form-control">
+                    <small style="color: var(--gray);">Unggah dokumen pendukung jika diperlukan</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('letterModal')">Batal</button>
+                <button class="btn btn-primary" onclick="submitLetter()">Ajukan Surat</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Modal Functions
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+        
+        // Form Submission Functions
+        function submitKRS() {
+            alert('KRS berhasil disimpan!');
+            closeModal('krsModal');
+        }
+        
+        function processPayment() {
+            alert('Pembayaran sedang diproses. Silakan lanjutkan ke halaman pembayaran.');
+            closeModal('paymentModal');
+        }
+        
+        function downloadTranscript() {
+            alert('Transkrip nilai sedang diunduh.');
+            closeModal('gradesModal');
+        }
+        
+        function submitLetter() {
+            alert('Pengajuan surat berhasil dikirim. Status dapat dilihat di menu Aktivitas.');
+            closeModal('letterModal');
+        }
+        
+        // Update total SKS when checkbox changed
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('#krsModal input[type="checkbox"]');
+            const totalSKS = document.getElementById('totalSKS');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    let selectedCount = 0;
+                    checkboxes.forEach(cb => {
+                        if (cb.checked) selectedCount++;
+                    });
+                    totalSKS.value = (selectedCount * 3) + ' SKS';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

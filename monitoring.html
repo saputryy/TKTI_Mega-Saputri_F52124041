@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dashboard Monitoring Proyek SMLAT</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0c2461 0%, #1e3799 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        
+        .dashboard-container {
+            width: 100%;
+            max-width: 1600px;
+            height: 95vh;
+            max-height: 95vh;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0 15px 0;
+            border-bottom: 2px solid rgba(12, 36, 97, 0.1);
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+        
+        .university-logo {
+            min-width: 50px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #0c2461, #1e3799);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(12, 36, 97, 0.3);
+            flex-shrink: 0;
+        }
+        
+        .project-title h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #0c2461;
+            margin-bottom: 3px;
+            line-height: 1.3;
+        }
+        
+        .project-title p {
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .date-section {
+            text-align: right;
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+        
+        .current-date {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0c2461;
+            margin-bottom: 5px;
+            white-space: nowrap;
+        }
+        
+        .project-duration {
+            font-size: 12px;
+            color: #666;
+            background: #f1f8ff;
+            padding: 4px 10px;
+            border-radius: 15px;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            gap: 12px;
+        }
+        
+        /* Stats */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 10px;
+            flex-shrink: 0;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(12, 36, 97, 0.08);
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-icon {
+            min-width: 45px;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .stat-icon-1 { background: linear-gradient(135deg, #1e90ff, #0c2461); }
+        .stat-icon-2 { background: linear-gradient(135deg, #26de81, #20bf6b); }
+        .stat-icon-3 { background: linear-gradient(135deg, #fd9644, #fa8231); }
+        .stat-icon-4 { background: linear-gradient(135deg, #a55eea, #8854d0); }
+        
+        .stat-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .stat-value {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0c2461;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Charts Area */
+        .charts-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 0;
+            overflow: hidden;
+        }
+        
+        .charts-row {
+            display: flex;
+            gap: 12px;
+            flex: 1;
+            min-height: 0;
+        }
+        
+        .charts-row-1 {
+            flex: 1.2;
+        }
+        
+        .charts-row-2 {
+            flex: 1;
+        }
+        
+        .chart-section {
+            flex: 1;
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(12, 36, 97, 0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #0c2461;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .section-title i {
+            color: #1e90ff;
+            font-size: 16px;
+        }
+        
+        .section-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
+        }
+        
+        /* Overall Progress */
+        .progress-circle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px 0;
+            flex: 1;
+        }
+        
+        .progress-circle {
+            width: 140px;
+            height: 140px;
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        .progress-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .progress-percent {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0c2461;
+            line-height: 1;
+        }
+        
+        .progress-label {
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .progress-details {
+            margin-top: 10px;
+            overflow-y: auto;
+            flex: 1;
+            max-height: 120px;
+        }
+        
+        .progress-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 13px;
+        }
+        
+        .progress-item:last-child {
+            border-bottom: none;
+        }
+        
+        .progress-item-name {
+            font-weight: 500;
+            color: #444;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 5px;
+        }
+        
+        .progress-item-value {
+            font-weight: 600;
+            color: #0c2461;
+            white-space: nowrap;
+        }
+        
+        /* Module Progress */
+        .modules-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 10px;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        
+        .module-item {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid rgba(12, 36, 97, 0.05);
+        }
+        
+        .module-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #0c2461;
+            margin-bottom: 8px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+        
+        .module-chart {
+            width: 90px;
+            height: 90px;
+            position: relative;
+        }
+        
+        /* Milestones */
+        .milestones-list {
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border-left: 4px solid #1e90ff;
+            font-size: 13px;
+        }
+        
+        .milestone-item.completed {
+            border-left-color: #26de81;
+            background: #f0fff4;
+        }
+        
+        .milestone-item.delayed {
+            border-left-color: #fc5c65;
+            background: #fff5f5;
+        }
+        
+        .milestone-icon {
+            min-width: 36px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e3f2fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: #1e90ff;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .milestone-item.completed .milestone-icon {
+            background: #d4edda;
+            color: #26de81;
+        }
+        
+        .milestone-item.delayed .milestone-icon {
+            background: #f8d7da;
+            color: #fc5c65;
+        }
+        
+        .milestone-content {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+        
+        .milestone-name {
+            font-weight: 600;
+            color: #0c2461;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .milestone-date {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .milestone-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 5px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-in-progress {
+            background: #e3f2fd;
+            color: #0c2461;
+        }
+        
+        .status-delayed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Budget & Timeline */
+        .budget-section, .timeline-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .timeline-section {
+            margin-top: 10px;
+        }
+        
+        .budget-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+        
+        .budget-amount {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0c2461;
+            white-space: nowrap;
+        }
+        
+        .budget-used {
+            font-size: 13px;
+            color: #666;
+            white-space: nowrap;
+        }
+        
+        .budget-progress-bar {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+        
+        .budget-progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #26de81, #20bf6b);
+            border-radius: 5px;
+            width: 65%;
+            position: relative;
+        }
+        
+        .budget-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        .budget-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+        
+        .timeline-chart {
+            height: 130px;
+            margin-top: 10px;
+            position: relative;
+            flex: 1;
+            min-height: 0;
+        }
+        
+        /* Animations */
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Scrollbar Styling */
+        .progress-details::-webkit-scrollbar,
+        .milestones-list::-webkit-scrollbar,
+        .modules-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .progress-details::-webkit-scrollbar-track,
+        .milestones-list::-webkit-scrollbar-track,
+        .modules-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .progress-details::-webkit-scrollbar-thumb,
+        .milestones-list::-webkit-scrollbar-thumb,
+        .modules-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        
+        /* Responsive Breakpoints */
+        @media (min-width: 768px) {
+            .dashboard-container {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 15px 0 20px 0;
+            }
+            
+            .project-title h1 {
+                font-size: 22px;
+            }
+            
+            .project-title p {
+                font-size: 14px;
+            }
+            
+            .current-date {
+                font-size: 16px;
+            }
+            
+            .project-duration {
+                font-size: 13px;
+                padding: 5px 12px;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(4, 1fr);
+                grid-gap: 15px;
+            }
+            
+            .stat-card {
+                padding: 18px;
+            }
+            
+            .stat-value {
+                font-size: 26px;
+            }
+            
+            .stat-label {
+                font-size: 13px;
+            }
+            
+            .main-content {
+                gap: 15px;
+            }
+            
+            .charts-row {
+                gap: 15px;
+            }
+            
+            .chart-section {
+                padding: 18px;
+                border-radius: 16px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+            
+            .progress-circle {
+                width: 160px;
+                height: 160px;
+            }
+            
+            .progress-percent {
+                font-size: 36px;
+            }
+            
+            .module-chart {
+                width: 100px;
+                height: 100px;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .dashboard-container {
+                padding: 25px;
+            }
+            
+            .header {
+                padding-bottom: 25px;
+            }
+            
+            .project-title h1 {
+                font-size: 24px;
+            }
+            
+            .stats-container {
+                grid-gap: 20px;
+            }
+            
+            .stat-card {
+                padding: 20px;
+            }
+            
+            .stat-value {
+                font-size: 28px;
+            }
+            
+            .main-content {
+                gap: 20px;
+            }
+            
+            .charts-row {
+                gap: 20px;
+            }
+            
+            .chart-section {
+                padding: 20px;
+            }
+            
+            .progress-circle {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .progress-percent {
+                font-size: 40px;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .dashboard-container {
+                padding: 30px;
+            }
+            
+            .project-title h1 {
+                font-size: 26px;
+            }
+            
+            .progress-circle {
+                width: 200px;
+                height: 200px;
+            }
+        }
+        
+        /* Portrait Orientation */
+        @media (max-height: 700px) and (orientation: portrait) {
+            .dashboard-container {
+                height: 98vh;
+                max-height: 98vh;
+                padding: 10px;
+            }
+            
+            .project-title h1 {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 15px;
+            }
+            
+            .progress-circle {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .progress-percent {
+                font-size: 28px;
+            }
+            
+            .timeline-chart {
+                height: 100px;
+            }
+        }
+        
+        /* Landscape Orientation for Mobile */
+        @media (orientation: landscape) and (max-height: 600px) {
+            .dashboard-container {
+                height: 98vh;
+                max-height: 98vh;
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 5px 0 10px 0;
+                margin-bottom: 5px;
+            }
+            
+            .main-content {
+                gap: 8px;
+            }
+            
+            .charts-row {
+                gap: 8px;
+            }
+            
+            .progress-circle {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .progress-percent {
+                font-size: 24px;
+            }
+            
+            .module-chart {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .timeline-chart {
+                height: 90px;
+            }
+        }
+        
+        /* Very Small Screens */
+        @media (max-width: 360px) {
+            .project-title h1 {
+                font-size: 16px;
+            }
+            
+            .current-date {
+                font-size: 13px;
+            }
+            
+            .project-duration {
+                font-size: 11px;
+                padding: 3px 8px;
+            }
+            
+            .stat-icon {
+                min-width: 40px;
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+                margin-right: 10px;
+            }
+            
+            .stat-value {
+                font-size: 20px;
+            }
+            
+            .stat-label {
+                font-size: 11px;
+            }
+            
+            .progress-circle {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .progress-percent {
+                font-size: 28px;
+            }
+            
+            .module-chart {
+                width: 80px;
+                height: 80px;
+            }
+        }
+        
+        /* Prevent text selection */
+        .dashboard-container {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="logo-section">
+                    <div class="university-logo">UT</div>
+                    <div class="project-title">
+                        <h1>PROYEK SMLAT - UNTAD</h1>
+                        <p>Sistem Manajemen Layanan Akademik Terintegrasi</p>
+                    </div>
+                </div>
+                <div class="date-section">
+                    <div class="current-date">27 September 2025</div>
+                    <div class="project-duration">6 Bulan (Jul-Des 2025)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Stats -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-1">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">78%</div>
+                        <div class="stat-label">Progress Keseluruhan</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-2">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">14/18</div>
+                        <div class="stat-label">Milestone Tercapai</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-3">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Tim Aktif</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-4">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">65%</div>
+                        <div class="stat-label">Anggaran Terpakai</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts Area -->
+            <div class="charts-area">
+                <!-- Row 1 -->
+                <div class="charts-row charts-row-1">
+                    <!-- Overall Progress -->
+                    <div class="chart-section">
+                        <div class="section-title">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Progress Keseluruhan</span>
+                        </div>
+                        <div class="section-content">
+                            <div class="progress-circle-container">
+                                <div class="progress-circle">
+                                    <canvas id="overallProgressChart"></canvas>
+                                    <div class="progress-value">
+                                        <div class="progress-percent">78%</div>
+                                        <div class="progress-label">Selesai</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="progress-details">
+                                <div class="progress-item">
+                                    <span class="progress-item-name">Analisis & Perencanaan</span>
+                                    <span class="progress-item-value">100%</span>
+                                </div>
+                                <div class="progress-item">
+                                    <span class="progress-item-name">Pengembangan Backend</span>
+                                    <span class="progress-item-value">85%</span>
+                                </div>
+                                <div class="progress-item">
+                                    <span class="progress-item-name">Pengembangan Frontend</span>
+                                    <span class="progress-item-value">70%</span>
+                                </div>
+                                <div class="progress-item">
+                                    <span class="progress-item-name">Integrasi Sistem</span>
+                                    <span class="progress-item-value">65%</span>
+                                </div>
+                                <div class="progress-item">
+                                    <span class="progress-item-name">Testing & QA</span>
+                                    <span class="progress-item-value">50%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Module Progress -->
+                    <div class="chart-section">
+                        <div class="section-title">
+                            <i class="fas fa-cubes"></i>
+                            <span>Progress Modul</span>
+                        </div>
+                        <div class="section-content">
+                            <div class="modules-container">
+                                <div class="module-item">
+                                    <div class="module-title">Dashboard Mahasiswa</div>
+                                    <div class="module-chart">
+                                        <canvas id="module1Chart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="module-item">
+                                    <div class="module-title">Dashboard Dosen</div>
+                                    <div class="module-chart">
+                                        <canvas id="module2Chart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="module-item">
+                                    <div class="module-title">Dashboard Admin</div>
+                                    <div class="module-chart">
+                                        <canvas id="module3Chart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="module-item">
+                                    <div class="module-title">Integrasi Payment</div>
+                                    <div class="module-chart">
+                                        <canvas id="module4Chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row 2 -->
+                <div class="charts-row charts-row-2">
+                    <!-- Milestones -->
+                    <div class="chart-section">
+                        <div class="section-title">
+                            <i class="fas fa-flag-checkered"></i>
+                            <span>Milestone Proyek</span>
+                        </div>
+                        <div class="section-content">
+                            <div class="milestones-list">
+                                <div class="milestone-item completed">
+                                    <div class="milestone-icon">
+                                        <i class="fas fa-file-signature"></i>
+                                    </div>
+                                    <div class="milestone-content">
+                                        <div class="milestone-name">Kick-off Meeting</div>
+                                        <div class="milestone-date">1 Juli 2025</div>
+                                    </div>
+                                    <div class="milestone-status status-completed">Selesai</div>
+                                </div>
+                                <div class="milestone-item completed">
+                                    <div class="milestone-icon">
+                                        <i class="fas fa-clipboard-list"></i>
+                                    </div>
+                                    <div class="milestone-content">
+                                        <div class="milestone-name">Analisis Kebutuhan</div>
+                                        <div class="milestone-date">15 Juli 2025</div>
+                                    </div>
+                                    <div class="milestone-status status-completed">Selesai</div>
+                                </div>
+                                <div class="milestone-item completed">
+                                    <div class="milestone-icon">
+                                        <i class="fas fa-pencil-ruler"></i>
+                                    </div>
+                                    <div class="milestone-content">
+                                        <div class="milestone-name">Desain UI/UX</div>
+                                        <div class="milestone-date">5 Agustus 2025</div>
+                                    </div>
+                                    <div class="milestone-status status-completed">Selesai</div>
+                                </div>
+                                <div class="milestone-item">
+                                    <div class="milestone-icon">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <div class="milestone-content">
+                                        <div class="milestone-name">Pengembangan Backend</div>
+                                        <div class="milestone-date">25 Sep 2025</div>
+                                    </div>
+                                    <div class="milestone-status status-in-progress">Proses</div>
+                                </div>
+                                <div class="milestone-item">
+                                    <div class="milestone-icon">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <div class="milestone-content">
+                                        <div class="milestone-name">Pengembangan Frontend</div>
+                                        <div class="milestone-date">15 Okt 2025</div>
+                                    </div>
+                                    <div class="milestone-status status-in-progress">Proses</div>
+                                </div>
+                                <div class="milestone-item delayed">
+                                    <div class="milestone-icon">
+                                        <i class="fas fa-university"></i>
+                                    </div>
+                                    <div class="milestone-content">
+                                        <div class="milestone-name">Integrasi Payment</div>
+                                        <div class="milestone-date">20 Okt 2025</div>
+                                    </div>
+                                    <div class="milestone-status status-delayed">Tertunda</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Budget & Timeline -->
+                    <div class="chart-section">
+                        <div class="section-title">
+                            <i class="fas fa-wallet"></i>
+                            <span>Anggaran & Timeline</span>
+                        </div>
+                        <div class="section-content">
+                            <div class="budget-section">
+                                <div class="budget-info">
+                                    <div class="budget-amount">Rp 520 Jt</div>
+                                    <div class="budget-used">Dari Rp 970 Jt</div>
+                                </div>
+                                <div class="budget-progress-bar">
+                                    <div class="budget-progress-fill pulse" style="width: 65%;"></div>
+                                </div>
+                                <div class="budget-details">
+                                    <span style="color: #666;">Tersisa: Rp 450 Jt</span>
+                                    <span style="font-weight: 600; color: #0c2461;">65% Terpakai</span>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-section">
+                                <div class="timeline-chart">
+                                    <canvas id="timelineChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set current date
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.querySelector('.current-date').textContent = now.toLocaleDateString('id-ID', options);
+        
+        // Initialize Charts
+        function initializeCharts() {
+            // Overall Progress Chart
+            const overallCtx = document.getElementById('overallProgressChart').getContext('2d');
+            new Chart(overallCtx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [78, 22],
+                        backgroundColor: ['#1e90ff', '#e9ecef'],
+                        borderWidth: 0,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    cutout: '70%',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+            
+            // Module Charts
+            const modules = [
+                { id: 'module1Chart', value: 92, color: '#26de81' },
+                { id: 'module2Chart', value: 85, color: '#fd9644' },
+                { id: 'module3Chart', value: 78, color: '#a55eea' },
+                { id: 'module4Chart', value: 55, color: '#fc5c65' }
+            ];
+            
+            modules.forEach(module => {
+                const ctx = document.getElementById(module.id).getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [module.value, 100 - module.value],
+                            backgroundColor: [module.color, '#f1f8ff'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        cutout: '65%',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: false }
+                        }
+                    }
+                });
+            });
+            
+            // Timeline Chart
+            const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+            new Chart(timelineCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'],
+                    datasets: [{
+                        data: [15, 35, 78, 65, 40, 10],
+                        backgroundColor: ['#1e90ff', '#1e90ff', '#1e90ff', '#fd9644', '#a55eea', '#26de81'],
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Progress: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                },
+                                font: {
+                                    size: window.innerWidth < 768 ? 10 : 11
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: window.innerWidth < 768 ? 10 : 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Initialize charts on load
+        document.addEventListener('DOMContentLoaded', initializeCharts);
+        
+        // Reinitialize charts on resize for better responsiveness
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                // Recreate charts
+                initializeCharts();
+            }, 250);
+        });
+        
+        // Auto-update date every minute
+        setInterval(() => {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.querySelector('.current-date').textContent = now.toLocaleDateString('id-ID', options);
+        }, 60000);
+        
+        // Prevent zoom on mobile
+        document.addEventListener('touchstart', function(e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+        
+        // Prevent context menu
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>

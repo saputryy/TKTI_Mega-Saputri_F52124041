@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMLAT - Dashboard Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        :root {
+            --primary: #1a5fb4;
+            --primary-light: #e3f2fd;
+            --secondary: #26a269;
+            --accent: #ff6b6b;
+            --admin: #1a5fb4;
+            --dark: #2e3436;
+            --light: #f8f9fa;
+            --gray: #8a8a8a;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--dark);
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            height: 95vh;
+            max-height: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(to right, var(--admin), #1a5fb4);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            background: white;
+            color: var(--admin);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .logo-text p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        
+        .user-info {
+            text-align: right;
+        }
+        
+        .user-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--light);
+            padding: 25px 20px;
+            border-right: 1px solid #eaeaea;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--dark);
+            text-decoration: none;
+        }
+        
+        .menu-item:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .menu-item.active {
+            background: var(--admin);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .menu-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .menu-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .notification-badge {
+            background: var(--accent);
+            color: white;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            margin-left: auto;
+        }
+        
+        /* Content Area */
+        .content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+        
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section-title h2 {
+            font-size: 22px;
+            color: var(--admin);
+            font-weight: 600;
+        }
+        
+        .see-all {
+            color: var(--admin);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: var(--light);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #eaeaea;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--admin);
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .card.transaction .card-icon { background: #3498db; }
+        .card.letter .card-icon { background: #2ecc71; }
+        .card.student .card-icon { background: #9b59b6; }
+        .card.lecturer .card-icon { background: #e74c3c; }
+        .card.report .card-icon { background: #f39c12; }
+        
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .card p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+        
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: var(--light);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 4px solid var(--admin);
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #f3e5f5;
+            color: var(--admin);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        
+        .stat-content h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .stat-content p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        /* Pending Items */
+        .pending-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .pending-card {
+            background: var(--light);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border-top: 4px solid var(--accent);
+        }
+        
+        .pending-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .pending-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ffebee;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .pending-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .pending-count {
+            margin-left: auto;
+            background: var(--accent);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .pending-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .pending-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        
+        .pending-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .pending-info p {
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        .pending-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-approve {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .btn-approve:hover {
+            background: #c8e6c9;
+        }
+        
+        .btn-reject {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .btn-reject:hover {
+            background: #ffcdd2;
+        }
+        
+        .btn-view {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .btn-view:hover {
+            background: #bbdefb;
+        }
+        
+        /* Recent Activities */
+        .activities-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f3e5f5;
+            color: var(--admin);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 16px;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .activity-time {
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        .activity-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-processing {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 700px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-header h3 {
+            font-size: 22px;
+            color: var(--admin);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .modal-body {
+            margin-bottom: 25px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--admin);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #7b1fa2;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-success {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #1e8e4f;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th {
+            background-color: #f0f0f0;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #ddd;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--light);
+            padding: 15px 30px;
+            text-align: center;
+            color: var(--gray);
+            font-size: 14px;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                padding: 15px;
+                overflow-x: auto;
+            }
+            
+            .menu-item {
+                min-width: 150px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .pending-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .user-info {
+                text-align: center;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pending-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .pending-actions {
+                align-self: flex-end;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .modal-content {
+                padding: 20px;
+                width: 95%;
+            }
+            
+            .modal-footer {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .stat-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">S</div>
+                <div class="logo-text">
+                    <h1>SMLAT</h1>
+                    <p>Sistem Mahasiswa Universitas Tadulako</p>
+                </div>
+            </div>
+            <div class="user-info">
+                <h3>Admin Sistem</h3>
+                <p>Administrator - Bagian Akademik</p>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <nav class="sidebar">
+                <a href="#" class="menu-item active">
+                    <div class="menu-icon"><i class="fas fa-home"></i></div>
+                    <div class="menu-text">Dashboard</div>
+                </a>
+                <a href="#" class="menu-item" onclick="showModal('transactionModal')">
+                    <div class="menu-icon"><i class="fas fa-money-check-alt"></i></div>
+                    <div class="menu-text">Verifikasi Transaksi</div>
+                    <div class="notification-badge">8</div>
+                </a>
+                <a href="#" class="menu-item" onclick="showModal('letterModal')">
+                    <div class="menu-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="menu-text">Validasi Surat</div>
+                    <div class="notification-badge">5</div>
+                </a>
+                <a href="#" class="menu-item" onclick="showModal('studentModal')">
+                    <div class="menu-icon"><i class="fas fa-user-graduate"></i></div>
+                    <div class="menu-text">Data Mahasiswa</div>
+                </a>
+                <a href="#" class="menu-item" onclick="showModal('lecturerModal')">
+                    <div class="menu-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <div class="menu-text">Data Dosen</div>
+                </a>
+            </nav>
+            
+            <!-- Content Area -->
+            <main class="content">
+                <!-- Welcome Section -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Selamat Datang, Admin Sistem!</h2>
+                    </div>
+                    <p>Dashboard Administrator Sistem Mahasiswa Universitas Tadulako (SMLAT) untuk mengelola semua aspek sistem akademik. Verifikasi transaksi, validasi surat, dan kelola data pengguna dengan mudah.</p>
+                </section>
+                
+                <!-- Statistics -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Statistik Sistem</h2>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+                            <div class="stat-content">
+                                <h3>2.845</h3>
+                                <p>Mahasiswa Aktif</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                            <div class="stat-content">
+                                <h3>142</h3>
+                                <p>Dosen Aktif</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
+                            <div class="stat-content">
+                                <h3>48</h3>
+                                <p>Transaksi Menunggu</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+                            <div class="stat-content">
+                                <h3>23</h3>
+                                <p>Surat Perlu Validasi</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quick Actions -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Aksi Cepat</h2>
+                        <a href="#" class="see-all">Lihat Semua <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="cards-grid">
+                        <div class="card transaction" onclick="showModal('transactionModal')">
+                            <div class="card-icon"><i class="fas fa-money-check-alt"></i></div>
+                            <h3>Verifikasi Transaksi</h3>
+                            <p>Verifikasi pembayaran UKT, SPP, dan transaksi lainnya</p>
+                        </div>
+                        <div class="card letter" onclick="showModal('letterModal')">
+                            <div class="card-icon"><i class="fas fa-envelope"></i></div>
+                            <h3>Validasi Surat</h3>
+                            <p>Validasi surat pengajuan dari mahasiswa dan dosen</p>
+                        </div>
+                        <div class="card student" onclick="showModal('studentModal')">
+                            <div class="card-icon"><i class="fas fa-user-graduate"></i></div>
+                            <h3>Data Mahasiswa</h3>
+                            <p>Kelola data mahasiswa, NIM, dan informasi akademik</p>
+                        </div>
+                        <div class="card lecturer" onclick="showModal('lecturerModal')">
+                            <div class="card-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                            <h3>Data Dosen</h3>
+                            <p>Kelola data dosen, NIDN, dan mata kuliah yang diampu</p>
+                        </div>
+                        <div class="card report" onclick="showModal('reportModal')">
+                            <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
+                            <h3>Laporan Sistem</h3>
+                            <p>Lihat dan ekspor laporan sistem akademik</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Pending Verifications -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Verifikasi yang Menunggu</h2>
+                        <a href="#" class="see-all">Lihat Semua <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="pending-grid">
+                        <div class="pending-card">
+                            <div class="pending-header">
+                                <div class="pending-icon"><i class="fas fa-money-bill-wave"></i></div>
+                                <div class="pending-title">Transaksi Pembayaran</div>
+                                <div class="pending-count">8</div>
+                            </div>
+                            <div class="pending-list">
+                                <div class="pending-item">
+                                    <div class="pending-info">
+                                        <h4>Mega Saputri (F52124041)</h4>
+                                        <p>UKT Semester Ganjil 2024 - Rp 2.500.000</p>
+                                    </div>
+                                    <div class="pending-actions">
+                                        <button class="action-btn btn-approve" onclick="approveTransaction('trans1')">Setujui</button>
+                                        <button class="action-btn btn-reject" onclick="rejectTransaction('trans1')">Tolak</button>
+                                    </div>
+                                </div>
+                                <div class="pending-item">
+                                    <div class="pending-info">
+                                        <h4>Budi Santoso (F52124042)</h4>
+                                        <p>Biaya Praktikum - Rp 350.000</p>
+                                    </div>
+                                    <div class="pending-actions">
+                                        <button class="action-btn btn-approve" onclick="approveTransaction('trans2')">Setujui</button>
+                                        <button class="action-btn btn-reject" onclick="rejectTransaction('trans2')">Tolak</button>
+                                    </div>
+                                </div>
+                                <div class="pending-item">
+                                    <div class="pending-info">
+                                        <h4>Sari Dewi (F52124043)</h4>
+                                        <p>SPP Semester Pendek - Rp 1.200.000</p>
+                                    </div>
+                                    <div class="pending-actions">
+                                        <button class="action-btn btn-view" onclick="viewTransaction('trans3')">Lihat</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="pending-card">
+                            <div class="pending-header">
+                                <div class="pending-icon"><i class="fas fa-envelope"></i></div>
+                                <div class="pending-title">Surat Perlu Validasi</div>
+                                <div class="pending-count">5</div>
+                            </div>
+                            <div class="pending-list">
+                                <div class="pending-item">
+                                    <div class="pending-info">
+                                        <h4>Agus Pratama (F52124044)</h4>
+                                        <p>Surat Keterangan Aktif</p>
+                                    </div>
+                                    <div class="pending-actions">
+                                        <button class="action-btn btn-approve" onclick="approveLetter('letter1')">Setujui</button>
+                                        <button class="action-btn btn-reject" onclick="rejectLetter('letter1')">Tolak</button>
+                                    </div>
+                                </div>
+                                <div class="pending-item">
+                                    <div class="pending-info">
+                                        <h4>Dr. Ahmad Santoso</h4>
+                                        <p>Surat Tugas Mengajar</p>
+                                    </div>
+                                    <div class="pending-actions">
+                                        <button class="action-btn btn-view" onclick="viewLetter('letter2')">Lihat</button>
+                                    </div>
+                                </div>
+                                <div class="pending-item">
+                                    <div class="pending-info">
+                                        <h4>Rina Wati (F52124045)</h4>
+                                        <p>Surat Permohonan Cuti</p>
+                                    </div>
+                                    <div class="pending-actions">
+                                        <button class="action-btn btn-approve" onclick="approveLetter('letter3')">Setujui</button>
+                                        <button class="action-btn btn-reject" onclick="rejectLetter('letter3')">Tolak</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Recent Activities -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Aktivitas Sistem Terbaru</h2>
+                        <a href="#" class="see-all">Lihat Semua <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="activities-list">
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="fas fa-user-plus"></i></div>
+                            <div class="activity-content">
+                                <div class="activity-title">Pendaftaran Mahasiswa Baru</div>
+                                <div class="activity-time">Hari ini, 10:30 WITA - 15 mahasiswa baru terdaftar</div>
+                            </div>
+                            <div class="activity-status status-processing">Berlangsung</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="fas fa-money-check-alt"></i></div>
+                            <div class="activity-content">
+                                <div class="activity-title">Verifikasi Transaksi UKT</div>
+                                <div class="activity-time">Kemarin, 14:20 WITA - 28 transaksi diverifikasi</div>
+                            </div>
+                            <div class="activity-status status-success">Selesai</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="activity-content">
+                                <div class="activity-title">Validasi Surat Keterangan</div>
+                                <div class="activity-time">2 hari lalu, 09:15 WITA - 12 surat divalidasi</div>
+                            </div>
+                            <div class="activity-status status-success">Selesai</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="fas fa-database"></i></div>
+                            <div class="activity-content">
+                                <div class="activity-title">Backup Database Sistem</div>
+                                <div class="activity-time">3 hari lalu, 23:45 WITA - Backup otomatis berhasil</div>
+                            </div>
+                            <div class="activity-status status-success">Selesai</div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 SMLAT - Universitas Tadulako. Hak Cipta Dilindungi.</p>
+        </footer>
+    </div>
+    
+    <!-- Modals -->
+    
+    <!-- Verifikasi Transaksi Modal -->
+    <div id="transactionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Verifikasi Transaksi Pembayaran</h3>
+                <button class="close-modal" onclick="closeModal('transactionModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="transactionFilter">Filter Transaksi</label>
+                    <select id="transactionFilter" class="form-control">
+                        <option value="pending">Menunggu Verifikasi</option>
+                        <option value="verified">Terverifikasi</option>
+                        <option value="rejected">Ditolak</option>
+                        <option value="all">Semua Transaksi</option>
+                    </select>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID Transaksi</th>
+                                <th>Mahasiswa</th>
+                                <th>Jenis</th>
+                                <th>Jumlah</th>
+                                <th>Tanggal</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TRX-2024-001</td>
+                                <td>Mega Saputri (F52124041)</td>
+                                <td>UKT Semester Ganjil</td>
+                                <td>Rp 2.500.000</td>
+                                <td>25 Sep 2024</td>
+                                <td><span style="color: orange; font-weight: 500;">Menunggu</span></td>
+                                <td>
+                                    <button class="action-btn btn-approve" style="padding: 5px 10px; margin-right: 5px;" onclick="approveTransaction('TRX-2024-001')">Setujui</button>
+                                    <button class="action-btn btn-reject" style="padding: 5px 10px;" onclick="rejectTransaction('TRX-2024-001')">Tolak</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>TRX-2024-002</td>
+                                <td>Budi Santoso (F52124042)</td>
+                                <td>Biaya Praktikum</td>
+                                <td>Rp 350.000</td>
+                                <td>24 Sep 2024</td>
+                                <td><span style="color: orange; font-weight: 500;">Menunggu</span></td>
+                                <td>
+                                    <button class="action-btn btn-approve" style="padding: 5px 10px; margin-right: 5px;" onclick="approveTransaction('TRX-2024-002')">Setujui</button>
+                                    <button class="action-btn btn-reject" style="padding: 5px 10px;" onclick="rejectTransaction('TRX-2024-002')">Tolak</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>TRX-2024-003</td>
+                                <td>Sari Dewi (F52124043)</td>
+                                <td>SPP Semester Pendek</td>
+                                <td>Rp 1.200.000</td>
+                                <td>23 Sep 2024</td>
+                                <td><span style="color: green; font-weight: 500;">Terverifikasi</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" style="padding: 5px 10px;">Detail</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>TRX-2024-004</td>
+                                <td>Agus Pratama (F52124044)</td>
+                                <td>UKT Semester Ganjil</td>
+                                <td>Rp 2.500.000</td>
+                                <td>22 Sep 2024</td>
+                                <td><span style="color: red; font-weight: 500;">Ditolak</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" style="padding: 5px 10px;">Detail</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
+                    <h4 style="margin-bottom: 10px; color: var(--admin);">Statistik Transaksi</h4>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div>
+                            <p style="margin: 5px 0;"><strong>Total Transaksi:</strong> 48</p>
+                            <p style="margin: 5px 0;"><strong>Terverifikasi:</strong> 35</p>
+                        </div>
+                        <div>
+                            <p style="margin: 5px 0;"><strong>Menunggu:</strong> 8</p>
+                            <p style="margin: 5px 0;"><strong>Ditolak:</strong> 5</p>
+                        </div>
+                        <div>
+                            <p style="margin: 5px 0;"><strong>Total Nilai:</strong> Rp 89.500.000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('transactionModal')">Tutup</button>
+                <button class="btn btn-primary" onclick="exportTransactionData()">Ekspor Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Validasi Surat Modal -->
+    <div id="letterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Validasi Surat Pengajuan</h3>
+                <button class="close-modal" onclick="closeModal('letterModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="letterFilter">Filter Surat</label>
+                    <select id="letterFilter" class="form-control">
+                        <option value="pending">Menunggu Validasi</option>
+                        <option value="validated">Tervalidasi</option>
+                        <option value="rejected">Ditolak</option>
+                        <option value="all">Semua Surat</option>
+                    </select>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID Surat</th>
+                                <th>Pengaju</th>
+                                <th>Jenis Surat</th>
+                                <th>Tanggal Ajuan</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SUR-2024-001</td>
+                                <td>Agus Pratama (F52124044)</td>
+                                <td>Surat Keterangan Aktif</td>
+                                <td>25 Sep 2024</td>
+                                <td><span style="color: orange; font-weight: 500;">Menunggu</span></td>
+                                <td>
+                                    <button class="action-btn btn-approve" style="padding: 5px 10px; margin-right: 5px;" onclick="approveLetter('SUR-2024-001')">Setujui</button>
+                                    <button class="action-btn btn-reject" style="padding: 5px 10px;" onclick="rejectLetter('SUR-2024-001')">Tolak</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SUR-2024-002</td>
+                                <td>Dr. Ahmad Santoso</td>
+                                <td>Surat Tugas Mengajar</td>
+                                <td>24 Sep 2024</td>
+                                <td><span style="color: orange; font-weight: 500;">Menunggu</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" style="padding: 5px 10px;">Lihat</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SUR-2024-003</td>
+                                <td>Rina Wati (F52124045)</td>
+                                <td>Surat Permohonan Cuti</td>
+                                <td>23 Sep 2024</td>
+                                <td><span style="color: green; font-weight: 500;">Tervalidasi</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" style="padding: 5px 10px;">Detail</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SUR-2024-004</td>
+                                <td>Mega Saputri (F52124041)</td>
+                                <td>Surat Keterangan Lulus</td>
+                                <td>22 Sep 2024</td>
+                                <td><span style="color: red; font-weight: 500;">Ditolak</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" style="padding: 5px 10px;">Detail</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('letterModal')">Tutup</button>
+                <button class="btn btn-primary" onclick="exportLetterData()">Ekspor Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Data Mahasiswa Modal -->
+    <div id="studentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Pengelolaan Data Mahasiswa</h3>
+                <button class="close-modal" onclick="closeModal('studentModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <div>
+                        <input type="text" class="form-control" placeholder="Cari mahasiswa..." style="width: 300px;">
+                    </div>
+                    <button class="btn btn-success" onclick="addNewStudent()"><i class="fas fa-plus"></i> Tambah Mahasiswa</button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>NIM</th>
+                                <th>Nama Mahasiswa</th>
+                                <th>Prodi</th>
+                                <th>Angkatan</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>F52124041</td>
+                                <td>Mega Saputri</td>
+                                <td>Sistem Informasi</td>
+                                <td>2022</td>
+                                <td><span style="color: green; font-weight: 500;">Aktif</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" style="padding: 5px 10px; margin-right: 5px;">Edit</button>
+                                    <button class="action-btn btn-reject" style="padding: 5px 10px;">Nonaktifkan</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>F52124042</td>
+                                <td>Budi Santoso</td>
+                                <td>Sistem Informasi</td>
+                                <td>2022</td>
+                                <td><span style="color: green; font-weight: 500;">Aktif</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" style="padding: 5px 10px; margin-right: 5px;">Edit</button>
+                                    <button class="action-btn btn-reject" style="padding: 5px 10px;">Nonaktifkan</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>F52124043</td>
+                                <td>Sari Dewi</td>
+                                <td>Sistem Informasi</td>
+                                <td>2022</td>
+                                <td><span style="color: orange; font-weight: 500;">Cuti</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" style="padding: 5px 10px; margin-right: 5px;">Edit</button>
+                                    <button class="action-btn btn-approve" style="padding: 5px 10px;">Aktifkan</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>F52124044</td>
+                                <td>Agus Pratama</td>
+                                <td>Sistem Informasi</td>
+                                <td>2022</td>
+                                <td><span style="color: green; font-weight: 500;">Aktif</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" style="padding: 5px 10px; margin-right: 5px;">Edit</button>
+                                    <button class="action-btn btn-reject" style="padding: 5px 10px;">Nonaktifkan</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
+                    <h4 style="margin-bottom: 10px; color: var(--admin);">Statistik Mahasiswa</h4>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div>
+                            <p style="margin: 5px 0;"><strong>Total Mahasiswa:</strong> 2.845</p>
+                            <p style="margin: 5px 0;"><strong>Aktif:</strong> 2.543</p>
+                        </div>
+                        <div>
+                            <p style="margin: 5px 0;"><strong>Cuti:</strong> 125</p>
+                            <p style="margin: 5px 0;"><strong>Lulus:</strong> 177</p>
+                        </div>
+                        <div>
+                            <p style="margin: 5px 0;"><strong>Per Prodi:</strong></p>
+                            <p style="margin: 5px 0; font-size: 12px;">SI: 685 | TI: 720 | MI: 720 | KA: 720</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('studentModal')">Tutup</button>
+                <button class="btn btn-primary" onclick="exportStudentData()">Ekspor Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Data Dosen Modal -->
+    <div id="lecturerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Pengelolaan Data Dosen</h3>
+                <button class="close-modal" onclick="closeModal('lecturerModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <div>
+                        <input type="text" class="form-control" placeholder="Cari dosen..." style="width: 300px;">
+                    </div>
+                    <button class="btn btn-success" onclick="addNewLecturer()"><i class="fas fa-plus"></i> Tambah Dosen</button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>NIDN</th>
+                                <th>Nama Dosen</th>
+                                <th>Jabatan</th>
+                                <th>Bidang Keahlian</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1234567890</td>
+                                <td>Dr. Ahmad Santoso, M.Kom.</td>
+                                <td>Dosen Tetap</td>
+                                <td>Sistem Basis Data</td>
+                                <td><span style="color: green; font-weight: 500;">Aktif</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" style="padding: 5px 10px; margin-right: 5px;">Edit</button>
+                                    <button class="action-btn btn-reject" style="padding: 5px 10px;">Nonaktifkan</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>0987654321</td>
+                                <td>Dr. Siti Rahayu, M.T.</td>
+                                <td>Dosen Tetap</td>
+                                <td>Pemrograman Web</td>
+                                <td><span style="color: green; font-weight: 500;">Aktif</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" style="padding: 5px 10px; margin-right: 5px;">Edit</button>
+                                    <button class="action-btn btn-reject" style="padding: 5px 10px;">Nonaktifkan</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1122334455</td>
+                                <td>Prof. Bambang Wijaya, Ph.D.</td>
+                                <td>Guru Besar</td>
+                                <td>Jaringan Komputer</td>
+                                <td><span style="color: green; font-weight: 500;">Aktif</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" style="padding: 5px 10px; margin-right: 5px;">Edit</button>
+                                    <button class="action-btn btn-reject" style="padding: 5px 10px;">Nonaktifkan</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5566778899</td>
+                                <td>Dr. Rina Dewi, M.Si.</td>
+                                <td>Dosen Tetap</td>
+                                <td>Kecerdasan Buatan</td>
+                                <td><span style="color: orange; font-weight: 500;">Cuti</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" style="padding: 5px 10px; margin-right: 5px;">Edit</button>
+                                    <button class="action-btn btn-approve" style="padding: 5px 10px;">Aktifkan</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('lecturerModal')">Tutup</button>
+                <button class="btn btn-primary" onclick="exportLecturerData()">Ekspor Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Modal Functions
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+        
+        // Transaction Functions
+        function approveTransaction(transactionId) {
+            alert(`Transaksi ${transactionId} berhasil disetujui!`);
+            updatePendingCounts();
+        }
+        
+        function rejectTransaction(transactionId) {
+            if (confirm(`Apakah Anda yakin ingin menolak transaksi ${transactionId}?`)) {
+                alert(`Transaksi ${transactionId} ditolak.`);
+                updatePendingCounts();
+            }
+        }
+        
+        function viewTransaction(transactionId) {
+            alert(`Menampilkan detail transaksi ${transactionId}`);
+        }
+        
+        // Letter Functions
+        function approveLetter(letterId) {
+            alert(`Surat ${letterId} berhasil divalidasi!`);
+            updatePendingCounts();
+        }
+        
+        function rejectLetter(letterId) {
+            if (confirm(`Apakah Anda yakin ingin menolak surat ${letterId}?`)) {
+                alert(`Surat ${letterId} ditolak.`);
+                updatePendingCounts();
+            }
+        }
+        
+        function viewLetter(letterId) {
+            alert(`Menampilkan detail surat ${letterId}`);
+        }
+        
+        // Export Functions
+        function exportTransactionData() {
+            alert('Data transaksi berhasil diekspor ke file Excel.');
+        }
+        
+        function exportLetterData() {
+            alert('Data surat berhasil diekspor ke file Excel.');
+        }
+        
+        function exportStudentData() {
+            alert('Data mahasiswa berhasil diekspor ke file Excel.');
+        }
+        
+        function exportLecturerData() {
+            alert('Data dosen berhasil diekspor ke file Excel.');
+        }
+        
+        // Add New Functions
+        function addNewStudent() {
+            alert('Membuka form tambah mahasiswa baru...');
+        }
+        
+        function addNewLecturer() {
+            alert('Membuka form tambah dosen baru...');
+        }
+        
+        // Update pending counts (simulated)
+        function updatePendingCounts() {
+            // In a real app, this would fetch updated counts from server
+            console.log('Memperbarui jumlah notifikasi...');
+        }
+        
+        // Initialize with some data
+        document.addEventListener('DOMContentLoaded', function() {
+            // Any initialization code can go here
+        });
+    </script>
+</body>
+</html>

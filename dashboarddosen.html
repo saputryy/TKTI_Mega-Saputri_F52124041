@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMLAT - Dashboard Dosen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        :root {
+            --primary: #1a5fb4;
+            --primary-light: #e3f2fd;
+            --secondary: #26a269;
+            --accent: #ff6b6b;
+            --dark: #2e3436;
+            --light: #f8f9fa;
+            --gray: #8a8a8a;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--dark);
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            height: 95vh;
+            max-height: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(to right, var(--primary), #0d4a9c);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            background: white;
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .logo-text p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        
+        .user-info {
+            text-align: right;
+        }
+        
+        .user-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--light);
+            padding: 25px 20px;
+            border-right: 1px solid #eaeaea;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--dark);
+            text-decoration: none;
+        }
+        
+        .menu-item:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .menu-item.active {
+            background: var(--primary);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .menu-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .menu-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .notification-badge {
+            background: var(--accent);
+            color: white;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            margin-left: auto;
+        }
+        
+        /* Content Area */
+        .content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+        
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section-title h2 {
+            font-size: 22px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .see-all {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: var(--light);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #eaeaea;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .card.grades .card-icon { background: #3498db; }
+        .card.monitor .card-icon { background: #2ecc71; }
+        .card.upload .card-icon { background: #9b59b6; }
+        .card.schedule .card-icon { background: #e74c3c; }
+        .card.students .card-icon { background: #f39c12; }
+        
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .card p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+        
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: var(--light);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        
+        .stat-content h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .stat-content p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        /* Courses List */
+        .courses-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .course-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .course-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
+        }
+        
+        .course-content {
+            flex: 1;
+        }
+        
+        .course-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .course-details {
+            display: flex;
+            gap: 15px;
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .course-action {
+            padding: 8px 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        
+        .course-action:hover {
+            background: #0d4a9c;
+        }
+        
+        /* Notifications */
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .notification-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-desc {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .notification-time {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-header h3 {
+            font-size: 22px;
+            color: var(--primary);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .modal-body {
+            margin-bottom: 25px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0d4a9c;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-success {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #1e8e4f;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th {
+            background-color: #f0f0f0;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #ddd;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .grade-input {
+            width: 70px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--light);
+            padding: 15px 30px;
+            text-align: center;
+            color: var(--gray);
+            font-size: 14px;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                padding: 15px;
+                overflow-x: auto;
+            }
+            
+            .menu-item {
+                min-width: 150px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .user-info {
+                text-align: center;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .course-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .course-action {
+                align-self: flex-end;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .modal-content {
+                padding: 20px;
+                width: 95%;
+            }
+            
+            .modal-footer {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .stat-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">S</div>
+                <div class="logo-text">
+                    <h1>SMLAT</h1>
+                    <p>Sistem Mahasiswa Universitas Tadulako</p>
+                </div>
+            </div>
+            <div class="user-info">
+                <h3>Dr. Ahmad Santoso, M.Kom.</h3>
+                <p>NIDN: 1234567890 | Dosen Sistem Informasi</p>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <nav class="sidebar">
+                <a href="#" class="menu-item active">
+                    <div class="menu-icon"><i class="fas fa-home"></i></div>
+                    <div class="menu-text">Dashboard</div>
+                </a>
+                <a href="#" class="menu-item" onclick="showModal('gradesModal')">
+                    <div class="menu-icon"><i class="fas fa-edit"></i></div>
+                    <div class="menu-text">Input Nilai</div>
+                </a>
+                <a href="#" class="menu-item" onclick="showModal('monitorModal')">
+                    <div class="menu-icon"><i class="fas fa-eye"></i></div>
+                    <div class="menu-text">Monitor KRS</div>
+                </a>
+                <a href="#" class="menu-item" onclick="showModal('uploadModal')">
+                    <div class="menu-icon"><i class="fas fa-upload"></i></div>
+                    <div class="menu-text">Upload Materi</div>
+                </a>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon"><i class="fas fa-bell"></i></div>
+                    <div class="menu-text">Notifikasi</div>
+                    <div class="notification-badge">5</div>
+                </a>
+            </nav>
+            
+            <!-- Content Area -->
+            <main class="content">
+                <!-- Welcome Section -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Selamat Datang, Dr. Ahmad!</h2>
+                    </div>
+                    <p>Dashboard Dosen Sistem Mahasiswa Universitas Tadulako (SMLAT) memudahkan Anda mengelola kegiatan akademik. Input nilai, pantau KRS mahasiswa, dan upload materi perkuliahan dengan mudah.</p>
+                </section>
+                
+                <!-- Statistics -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Statistik Mengajar</h2>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-book"></i></div>
+                            <div class="stat-content">
+                                <h3>4</h3>
+                                <p>Mata Kuliah</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-users"></i></div>
+                            <div class="stat-content">
+                                <h3>142</h3>
+                                <p>Total Mahasiswa</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                            <div class="stat-content">
+                                <h3>87%</h3>
+                                <p>Kelulusan</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                            <div class="stat-content">
+                                <h3>12</h3>
+                                <p>Jam Mengajar/Minggu</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quick Actions -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Aksi Cepat</h2>
+                        <a href="#" class="see-all">Lihat Semua <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="cards-grid">
+                        <div class="card grades" onclick="showModal('gradesModal')">
+                            <div class="card-icon"><i class="fas fa-edit"></i></div>
+                            <h3>Input Nilai</h3>
+                            <p>Input atau edit nilai mahasiswa untuk mata kuliah yang diampu</p>
+                        </div>
+                        <div class="card monitor" onclick="showModal('monitorModal')">
+                            <div class="card-icon"><i class="fas fa-eye"></i></div>
+                            <h3>Monitor KRS</h3>
+                            <p>Pantau KRS mahasiswa untuk mata kuliah yang Anda ajarkan</p>
+                        </div>
+                        <div class="card upload" onclick="showModal('uploadModal')">
+                            <div class="card-icon"><i class="fas fa-upload"></i></div>
+                            <h3>Upload Materi</h3>
+                            <p>Upload materi perkuliahan, tugas, dan bahan ajar lainnya</p>
+                        </div>
+                        <div class="card schedule" onclick="showModal('scheduleModal')">
+                            <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
+                            <h3>Jadwal Mengajar</h3>
+                            <p>Lihat jadwal mengajar dan kelas yang diampu</p>
+                        </div>
+                        <div class="card students" onclick="showModal('studentsModal')">
+                            <div class="card-icon"><i class="fas fa-user-graduate"></i></div>
+                            <h3>Daftar Mahasiswa</h3>
+                            <p>Lihat daftar mahasiswa di setiap mata kuliah yang diampu</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Courses -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Mata Kuliah yang Diampu</h2>
+                        <a href="#" class="see-all">Lihat Semua <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="courses-list">
+                        <div class="course-item">
+                            <div class="course-icon"><i class="fas fa-database"></i></div>
+                            <div class="course-content">
+                                <div class="course-title">Sistem Basis Data</div>
+                                <div class="course-details">
+                                    <span><i class="fas fa-users"></i> 38 Mahasiswa</span>
+                                    <span><i class="fas fa-clock"></i> Senin & Rabu, 08:00-09:40</span>
+                                    <span><i class="fas fa-university"></i> Ruang 301</span>
+                                </div>
+                            </div>
+                            <button class="course-action" onclick="showModal('gradesModal')">Input Nilai</button>
+                        </div>
+                        <div class="course-item">
+                            <div class="course-icon"><i class="fas fa-code"></i></div>
+                            <div class="course-content">
+                                <div class="course-title">Pemrograman Web</div>
+                                <div class="course-details">
+                                    <span><i class="fas fa-users"></i> 42 Mahasiswa</span>
+                                    <span><i class="fas fa-clock"></i> Selasa & Kamis, 10:00-11:40</span>
+                                    <span><i class="fas fa-university"></i> Lab. Komputer 2</span>
+                                </div>
+                            </div>
+                            <button class="course-action" onclick="showModal('uploadModal')">Upload Materi</button>
+                        </div>
+                        <div class="course-item">
+                            <div class="course-icon"><i class="fas fa-project-diagram"></i></div>
+                            <div class="course-content">
+                                <div class="course-title">Analisis & Desain Sistem</div>
+                                <div class="course-details">
+                                    <span><i class="fas fa-users"></i> 35 Mahasiswa</span>
+                                    <span><i class="fas fa-clock"></i> Rabu & Jumat, 13:00-14:40</span>
+                                    <span><i class="fas fa-university"></i> Ruang 205</span>
+                                </div>
+                            </div>
+                            <button class="course-action" onclick="showModal('monitorModal')">Monitor KRS</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Notifications -->
+                <section class="content-section">
+                    <div class="section-title">
+                        <h2>Notifikasi Terbaru</h2>
+                        <a href="#" class="see-all">Lihat Semua <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="notifications-list">
+                        <div class="notification-item">
+                            <div class="notification-icon"><i class="fas fa-calendar-check"></i></div>
+                            <div class="notification-content">
+                                <div class="notification-title">Batas Input Nilai UTS</div>
+                                <div class="notification-desc">Batas akhir input nilai UTS Semester Ganjil 2024/2025 adalah 15 Oktober 2024.</div>
+                                <div class="notification-time">1 hari yang lalu</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon"><i class="fas fa-exclamation-circle"></i></div>
+                            <div class="notification-content">
+                                <div class="notification-title">Rapat Dosen</div>
+                                <div class="notification-desc">Rapat dosen Fakultas Teknik akan dilaksanakan pada Jumat, 4 Oktober 2024 pukul 13:00 WITA.</div>
+                                <div class="notification-time">2 hari yang lalu</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon"><i class="fas fa-user-graduate"></i></div>
+                            <div class="notification-content">
+                                <div class="notification-title">Pengajuan Judul Skripsi</div>
+                                <div class="notification-desc">Ada 5 mahasiswa yang mengajukan judul skripsi untuk Anda review.</div>
+                                <div class="notification-time">3 hari yang lalu</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 SMLAT - Universitas Tadulako. Hak Cipta Dilindungi.</p>
+        </footer>
+    </div>
+    
+    <!-- Modals -->
+    
+    <!-- Input Nilai Modal -->
+    <div id="gradesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Input Nilai Mahasiswa</h3>
+                <button class="close-modal" onclick="closeModal('gradesModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="courseSelect">Mata Kuliah</label>
+                    <select id="courseSelect" class="form-control" onchange="loadStudents()">
+                        <option value="database">Sistem Basis Data</option>
+                        <option value="web">Pemrograman Web</option>
+                        <option value="analysis">Analisis & Desain Sistem</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="gradeType">Jenis Nilai</label>
+                    <select id="gradeType" class="form-control">
+                        <option value="uts">UTS</option>
+                        <option value="uas">UAS</option>
+                        <option value="tugas">Tugas</option>
+                        <option value="quiz">Quiz</option>
+                    </select>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>NIM</th>
+                                <th>Nama Mahasiswa</th>
+                                <th>Nilai</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTable">
+                            <tr>
+                                <td>F52124041</td>
+                                <td>Mega Saputri</td>
+                                <td><input type="number" class="grade-input" value="85" min="0" max="100"></td>
+                                <td>A</td>
+                            </tr>
+                            <tr>
+                                <td>F52124042</td>
+                                <td>Budi Santoso</td>
+                                <td><input type="number" class="grade-input" value="78" min="0" max="100"></td>
+                                <td>B+</td>
+                            </tr>
+                            <tr>
+                                <td>F52124043</td>
+                                <td>Sari Dewi</td>
+                                <td><input type="number" class="grade-input" value="92" min="0" max="100"></td>
+                                <td>A</td>
+                            </tr>
+                            <tr>
+                                <td>F52124044</td>
+                                <td>Agus Pratama</td>
+                                <td><input type="number" class="grade-input" value="65" min="0" max="100"></td>
+                                <td>C+</td>
+                            </tr>
+                            <tr>
+                                <td>F52124045</td>
+                                <td>Rina Wati</td>
+                                <td><input type="number" class="grade-input" value="88" min="0" max="100"></td>
+                                <td>A-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('gradesModal')">Batal</button>
+                <button class="btn btn-success" onclick="saveGrades()">Simpan Nilai</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Monitor KRS Modal -->
+    <div id="monitorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Monitor KRS Mahasiswa</h3>
+                <button class="close-modal" onclick="closeModal('monitorModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="monitorCourse">Mata Kuliah</label>
+                    <select id="monitorCourse" class="form-control">
+                        <option value="database">Sistem Basis Data</option>
+                        <option value="web">Pemrograman Web</option>
+                        <option value="analysis">Analisis & Desain Sistem</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="monitorSemester">Semester</label>
+                    <select id="monitorSemester" class="form-control">
+                        <option value="ganjil">Semester Ganjil 2024/2025</option>
+                        <option value="genap">Semester Genap 2023/2024</option>
+                    </select>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>NIM</th>
+                                <th>Nama Mahasiswa</th>
+                                <th>Prodi</th>
+                                <th>Status KRS</th>
+                                <th>Jumlah SKS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>F52124041</td>
+                                <td>Mega Saputri</td>
+                                <td>Sistem Informasi</td>
+                                <td><span style="color: green; font-weight: 500;">Disetujui</span></td>
+                                <td>20</td>
+                            </tr>
+                            <tr>
+                                <td>F52124042</td>
+                                <td>Budi Santoso</td>
+                                <td>Sistem Informasi</td>
+                                <td><span style="color: green; font-weight: 500;">Disetujui</span></td>
+                                <td>18</td>
+                            </tr>
+                            <tr>
+                                <td>F52124043</td>
+                                <td>Sari Dewi</td>
+                                <td>Sistem Informasi</td>
+                                <td><span style="color: orange; font-weight: 500;">Menunggu</span></td>
+                                <td>22</td>
+                            </tr>
+                            <tr>
+                                <td>F52124044</td>
+                                <td>Agus Pratama</td>
+                                <td>Sistem Informasi</td>
+                                <td><span style="color: green; font-weight: 500;">Disetujui</span></td>
+                                <td>19</td>
+                            </tr>
+                            <tr>
+                                <td>F52124045</td>
+                                <td>Rina Wati</td>
+                                <td>Sistem Informasi</td>
+                                <td><span style="color: red; font-weight: 500;">Ditolak</span></td>
+                                <td>24</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
+                    <h4 style="margin-bottom: 10px; color: var(--primary);">Statistik KRS</h4>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div>
+                            <p style="margin: 5px 0;"><strong>Total Mahasiswa:</strong> 38</p>
+                            <p style="margin: 5px 0;"><strong>Disetujui:</strong> 30</p>
+                        </div>
+                        <div>
+                            <p style="margin: 5px 0;"><strong>Menunggu:</strong> 5</p>
+                            <p style="margin: 5px 0;"><strong>Ditolak:</strong> 3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('monitorModal')">Tutup</button>
+                <button class="btn btn-primary" onclick="exportKRSData()">Ekspor Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Upload Materi Modal -->
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Upload Materi Perkuliahan</h3>
+                <button class="close-modal" onclick="closeModal('uploadModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="uploadCourse">Mata Kuliah</label>
+                    <select id="uploadCourse" class="form-control">
+                        <option value="database">Sistem Basis Data</option>
+                        <option value="web">Pemrograman Web</option>
+                        <option value="analysis">Analisis & Desain Sistem</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="materialTitle">Judul Materi</label>
+                    <input type="text" id="materialTitle" class="form-control" placeholder="Contoh: Pertemuan 1 - Pengenalan Database">
+                </div>
+                <div class="form-group">
+                    <label for="materialType">Jenis Materi</label>
+                    <select id="materialType" class="form-control">
+                        <option value="slide">Slide Presentasi</option>
+                        <option value="document">Dokumen</option>
+                        <option value="video">Video</option>
+                        <option value="assignment">Tugas</option>
+                        <option value="other">Lainnya</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="materialDescription">Deskripsi</label>
+                    <textarea id="materialDescription" class="form-control" rows="3" placeholder="Deskripsi singkat tentang materi yang diupload"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="materialFile">File Materi</label>
+                    <input type="file" id="materialFile" class="form-control">
+                    <small style="color: var(--gray);">Ukuran maksimal file: 50MB. Format yang didukung: PDF, PPT, DOC, MP4, ZIP</small>
+                </div>
+                <div class="form-group">
+                    <label for="materialAccess">Akses Materi</label>
+                    <select id="materialAccess" class="form-control">
+                        <option value="all">Semua Mahasiswa</option>
+                        <option value="specific">Kelas Tertentu</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('uploadModal')">Batal</button>
+                <button class="btn btn-success" onclick="uploadMaterial()">Upload Materi</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Modal Functions
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+        
+        // Form Submission Functions
+        function saveGrades() {
+            alert('Nilai berhasil disimpan!');
+            closeModal('gradesModal');
+        }
+        
+        function exportKRSData() {
+            alert('Data KRS berhasil diekspor ke file CSV.');
+            closeModal('monitorModal');
+        }
+        
+        function uploadMaterial() {
+            const title = document.getElementById('materialTitle').value;
+            if (!title) {
+                alert('Harap masukkan judul materi terlebih dahulu.');
+                return;
+            }
+            alert(`Materi "${title}" berhasil diupload!`);
+            closeModal('uploadModal');
+        }
+        
+        // Simulate loading students based on selected course
+        function loadStudents() {
+            const courseSelect = document.getElementById('courseSelect');
+            const selectedCourse = courseSelect.options[courseSelect.selectedIndex].text;
+            
+            // In a real application, this would fetch data from server
+            console.log(`Memuat data mahasiswa untuk mata kuliah: ${selectedCourse}`);
+        }
+        
+        // Update grade automatically based on input value
+        document.addEventListener('DOMContentLoaded', function() {
+            const gradeInputs = document.querySelectorAll('.grade-input');
+            
+            gradeInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const value = parseInt(this.value);
+                    const row = this.closest('tr');
+                    const gradeCell = row.cells[3];
+                    
+                    let grade = '';
+                    if (value >= 85) grade = 'A';
+                    else if (value >= 80) grade = 'A-';
+                    else if (value >= 75) grade = 'B+';
+                    else if (value >= 70) grade = 'B';
+                    else if (value >= 65) grade = 'C+';
+                    else if (value >= 60) grade = 'C';
+                    else if (value >= 55) grade = 'D';
+                    else grade = 'E';
+                    
+                    gradeCell.textContent = grade;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
