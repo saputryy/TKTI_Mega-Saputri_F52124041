@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Selection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #e0e6ef;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .dashboard-btn {
+            background-color: white;
+            border-radius: 12px;
+            padding: 35px 25px;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dashboard-btn:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .dashboard-btn:active {
+            transform: translateY(-4px);
+        }
+        
+        .icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .btn-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .btn-description {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        /* Warna dan ikon untuk setiap dashboard */
+        .admin-btn {
+            border-color: #3498db;
+        }
+        
+        .admin-btn .icon {
+            color: #3498db;
+        }
+        
+        .admin-btn:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .dosen-btn {
+            border-color: #2ecc71;
+        }
+        
+        .dosen-btn .icon {
+            color: #2ecc71;
+        }
+        
+        .dosen-btn:hover {
+            background-color: rgba(46, 204, 113, 0.05);
+        }
+        
+        .mahasiswa-btn {
+            border-color: #e74c3c;
+        }
+        
+        .mahasiswa-btn .icon {
+            color: #e74c3c;
+        }
+        
+        .mahasiswa-btn:hover {
+            background-color: rgba(231, 76, 60, 0.05);
+        }
+        
+        .monitoring-btn {
+            border-color: #9b59b6;
+        }
+        
+        .monitoring-btn .icon {
+            color: #9b59b6;
+        }
+        
+        .monitoring-btn:hover {
+            background-color: rgba(155, 89, 182, 0.05);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px 0;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #e0e6ef;
+        }
+        
+        /* Responsif untuk layar kecil */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .dashboard-btn {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .btn-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sistem Dashboard Akademik</h1>
+            <p class="subtitle">Pilih dashboard sesuai dengan peran Anda untuk mengakses sistem akademik</p>
+        </header>
+        
+        <main>
+            <div class="dashboard-grid">
+                <a href="dashboardadmin.html" class="dashboard-btn admin-btn">
+                    <i class="fas fa-user-shield icon"></i>
+                    <div class="btn-title">Dashboard Admin</div>
+                    <div class="btn-description">Akses penuh untuk mengelola sistem, pengguna, dan konfigurasi</div>
+                </a>
+                
+                <a href="dashboarddosen.html" class="dashboard-btn dosen-btn">
+                    <i class="fas fa-chalkboard-teacher icon"></i>
+                    <div class="btn-title">Dashboard Dosen</div>
+                    <div class="btn-description">Kelola materi, nilai, jadwal mengajar, dan bimbingan mahasiswa</div>
+                </a>
+                
+                <a href="dashboardmahasiswa.html" class="dashboard-btn mahasiswa-btn">
+                    <i class="fas fa-user-graduate icon"></i>
+                    <div class="btn-title">Dashboard Mahasiswa</div>
+                    <div class="btn-description">Akses materi kuliah, nilai, jadwal, dan informasi akademik</div>
+                </a>
+                
+                <a href="monitoring.html" class="dashboard-btn monitoring-btn">
+                    <i class="fas fa-chart-line icon"></i>
+                    <div class="btn-title">Dashboard Monitoring</div>
+                    <div class="btn-description">Pantau aktivitas sistem, kinerja, dan statistik penggunaan</div>
+                </a>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Sistem Akademik &copy; 2025 | Universitas Tadulako</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Menambahkan animasi saat tombol diklik
+        document.querySelectorAll('.dashboard-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Animasi sederhana saat tombol ditekan
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+                
+                // Simulasi loading sebelum pindah halaman (untuk demo)
+                // Di lingkungan nyata, ini akan langsung mengarahkan ke halaman tujuan
+                console.log(`Mengarahkan ke: ${this.getAttribute('href')}`);
+            });
+        });
+        
+        // Notifikasi jika halaman tujuan tidak ditemukan (untuk demo)
+        document.querySelectorAll('.dashboard-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Jika hanya demo, cegah navigasi sebenarnya
+                // Hapus kode ini jika halaman HTML tujuan sudah tersedia
+                if (!confirm(`Anda akan diarahkan ke: ${this.getAttribute('href')}\n\nUntuk demo ini, halaman tersebut belum dibuat. Klik OK untuk melanjutkan.`)) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
